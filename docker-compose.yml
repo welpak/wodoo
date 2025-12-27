@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  wodoo:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: wodoo-app
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      # Load from .env file
+      - ODOO_URL=${ODOO_URL:-https://welpakco.com}
+      - ODOO_DB=${ODOO_DB:-welpakco}
+      - ODOO_USERNAME=${ODOO_USERNAME}
+      - ODOO_PASSWORD=${ODOO_PASSWORD}
+      - API_PREFIX=${API_PREFIX:-/api/v1}
+      - HOST=0.0.0.0
+      - PORT=8000
+      - WORKERS=4
+    volumes:
+      - ./frontend:/app/frontend:ro
+    networks:
+      - wodoo-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  wodoo-network:
+    driver: bridge
