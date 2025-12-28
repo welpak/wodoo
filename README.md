@@ -54,7 +54,7 @@ A fast, lightweight web application for managing inventory locations in Odoo 16 
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/wodoo.git
+git clone https://github.com/welpak/wodoo.git
 cd wodoo
 ```
 
@@ -350,7 +350,7 @@ MIT License - See LICENSE file for details
 ## Support
 
 For issues and questions:
-- GitHub Issues: https://github.com/yourusername/wodoo/issues
+- GitHub Issues: https://github.com/welpak/wodoo/issues
 - Email: support@welpakco.com
 
 ## Acknowledgments

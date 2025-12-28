@@ -276,7 +276,7 @@ show_completion_message() {
     echo -e "  ${BLUE}sudo apt-get autoremove${NC}"
     echo ""
     echo -e "${GREEN}To reinstall Wodoo:${NC}"
-    echo -e "  ${BLUE}git clone <repository-url>${NC}"
+    echo -e "  ${BLUE}git clone https://github.com/welpak/wodoo.git${NC}"
     echo -e "  ${BLUE}cd wodoo${NC}"
     echo -e "  ${BLUE}sudo bash deploy.sh${NC}"
     echo ""

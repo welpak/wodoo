@@ -81,7 +81,7 @@ newgrp docker
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/wodoo.git
+git clone https://github.com/welpak/wodoo.git
 cd wodoo
 
 # Create environment file
@@ -166,7 +166,7 @@ sudo apt-get install -y \
 
 ```bash
 # Clone to temporary location
-git clone https://github.com/yourusername/wodoo.git /tmp/wodoo
+git clone https://github.com/welpak/wodoo.git /tmp/wodoo
 
 # Run installation script
 sudo bash /tmp/wodoo/deploy/install.sh
@@ -217,7 +217,7 @@ sudo mkdir -p /opt/wodoo
 cd /opt/wodoo
 
 # Clone repository
-sudo git clone https://github.com/yourusername/wodoo.git .
+sudo git clone https://github.com/welpak/wodoo.git .
 
 # Create virtual environment
 sudo python3 -m venv venv

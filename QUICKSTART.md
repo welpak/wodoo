@@ -23,7 +23,7 @@ scp -r wodoo/ user@your-server-ip:/tmp/wodoo/
 
 # Option C: Using git (if you've pushed to a repository)
 ssh user@your-server-ip
-git clone <your-repository-url> /tmp/wodoo
+git clone https://github.com/welpak/wodoo.git /tmp/wodoo
 ```
 
 ### Step 2: SSH into Your Server
