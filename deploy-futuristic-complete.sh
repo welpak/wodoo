@@ -5,11 +5,16 @@
 
 set -e
 
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 echo "🚀 Deploying Complete Futuristic UI..."
+echo "📂 Working from: $SCRIPT_DIR"
+echo ""
 
 # Deploy the futuristic HTML
 echo "📄 Deploying HTML file..."
-sudo cp /home/user/wodoo/frontend/index.html /opt/wodoo/frontend/index.html
+sudo cp "$SCRIPT_DIR/frontend/index.html" /opt/wodoo/frontend/index.html
 
 # Update database name from 'welpakco' to 'prod'
 echo "🗄️  Updating database name to 'prod'..."
