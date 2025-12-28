@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """
-Fetch all stock locations from Odoo instance
+Fetch all stock locations from Odoo instance (Standalone version)
 Supports export to CSV or JSON
 """
 
+import os
 import sys
 import json
 import csv
@@ -11,24 +12,28 @@ import xmlrpc.client
 from datetime import datetime
 from pathlib import Path
 
-# Add parent directory to path for imports
-sys.path.insert(0, str(Path(__file__).parent.parent / 'backend'))
 
-from app.config import settings
+# Configuration from environment or defaults
+ODOO_URL = os.getenv('ODOO_URL', 'https://welpakco.com')
+ODOO_DB = os.getenv('ODOO_DB', 'prod')
+ODOO_USERNAME = os.getenv('ODOO_USERNAME', 'admin@welpakco.com')
+ODOO_PASSWORD = os.getenv('ODOO_PASSWORD', 'Nirvana0rff!')
 
 
 def connect_to_odoo():
     """Connect to Odoo and authenticate"""
-    print(f"🔌 Connecting to {settings.ODOO_URL}...")
+    print(f"🔌 Connecting to {ODOO_URL}...")
+    print(f"📚 Database: {ODOO_DB}")
+    print(f"👤 Username: {ODOO_USERNAME}")
 
     # Common endpoint
-    common = xmlrpc.client.ServerProxy(f'{settings.ODOO_URL}/xmlrpc/2/common')
+    common = xmlrpc.client.ServerProxy(f'{ODOO_URL}/xmlrpc/2/common')
 
     # Authenticate
     uid = common.authenticate(
-        settings.ODOO_DB,
-        settings.ODOO_USERNAME,
-        settings.ODOO_PASSWORD,
+        ODOO_DB,
+        ODOO_USERNAME,
+        ODOO_PASSWORD,
         {}
     )
 
@@ -38,7 +43,7 @@ def connect_to_odoo():
     print(f"✅ Authenticated as user ID: {uid}")
 
     # Models endpoint
-    models = xmlrpc.client.ServerProxy(f'{settings.ODOO_URL}/xmlrpc/2/object')
+    models = xmlrpc.client.ServerProxy(f'{ODOO_URL}/xmlrpc/2/object')
 
     return uid, models
 
@@ -49,7 +54,7 @@ def fetch_all_locations(uid, models):
 
     # Count total locations
     count = models.execute_kw(
-        settings.ODOO_DB, uid, settings.ODOO_PASSWORD,
+        ODOO_DB, uid, ODOO_PASSWORD,
         'stock.location', 'search_count',
         [[]]
     )
@@ -64,7 +69,7 @@ def fetch_all_locations(uid, models):
     ]
 
     locations = models.execute_kw(
-        settings.ODOO_DB, uid, settings.ODOO_PASSWORD,
+        ODOO_DB, uid, ODOO_PASSWORD,
         'stock.location', 'search_read',
         [[]],
         {
