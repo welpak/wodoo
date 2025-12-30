@@ -4,49 +4,49 @@
     "Location": "Louisburg, NC 27549 (Franklinton area)",
     "Phone": "(919) 496-3162",
     "Website": "N/A",
-    "Notes": "Local pallet manufacturer. High likelihood of having or sourcing used Gaylord boxes/bins."
+    "Notes": "Local pallet manufacturer. High likelihood of having or sourcing 48x40 or 48x48 Gaylord boxes."
   },
   {
     "Name": "PalletOne Inc.",
     "Location": "1010 26th Street, Butner, NC 27509",
     "Phone": "919-575-6491",
     "Website": "https://www.palletone.com/butner-nc/",
-    "Notes": "Large pallet recycler and manufacturer (~25 miles away). Deals in recycled pallets and likely bulk bins."
+    "Notes": "Large pallet recycler (~25 miles away). Known for standard 48x40 and potential custom sizes. Likely has rectangular bulk bins."
   },
   {
     "Name": "Repackify (Marketplace)",
-    "Location": "Smithfield, Fuquay Varina, Cary, NC",
+    "Location": "Smithfield, Fuquay Varina, Cary, Fayetteville, Charlotte, NC",
     "Phone": "(888) 413-7506",
     "Website": "https://www.repackify.com/buy-gaylord-boxes/north-carolina",
-    "Notes": "Online marketplace with verified listings in Smithfield (~40 miles), Fuquay Varina, and Cary."
+    "Notes": "Online marketplace with verified listings. Search specifically for '48x40' or '48x48' square/rectangular boxes. Avoid octagonal listings."
   },
   {
     "Name": "Southern Container Corporation",
     "Location": "6003 Ward Blvd, Wilson, NC 27894",
     "Phone": "(252) 237-0539",
     "Website": "https://socontainers.com/",
-    "Notes": "Specializes in agricultural and bulk packaging solutions. Strong candidate for Gaylord boxes."
+    "Notes": "Specializes in agricultural and bulk packaging. Strong candidate for square/rectangular Gaylord boxes."
   },
   {
     "Name": "Louisburg Recycling",
     "Location": "790 NC-561, Louisburg, NC 27549",
     "Phone": "919-340-0565",
     "Website": "http://louisburgrecycling.com/",
-    "Notes": "Primary focus is scrap metal, but they handle industrial waste/dumpsters and may have leads."
+    "Notes": "Primary focus is scrap metal/waste, but may have leads on used industrial bins."
   },
   {
     "Name": "Carolina Packaging & Supply, Inc.",
     "Location": "3215 Wellington Ct., #108, Raleigh, NC 27615",
     "Phone": "919.876.1616",
     "Website": "N/A",
-    "Notes": "General packaging supply company in North Raleigh."
+    "Notes": "General packaging supply. Inquire about bulk rectangular bins."
   },
   {
     "Name": "Sonoco Recycling",
     "Location": "Raleigh, NC",
     "Phone": "N/A",
     "Website": "https://www.sonoco.com/na/products/services/recycling",
-    "Notes": "Major recycler handling Old Corrugated Containers (OCC). Contact for bulk purchasing inquiries."
+    "Notes": "Major recycler handling OCC. Good contact for bulk used boxes."
   },
   {
     "Name": "Stephen Gould",
@@ -54,5 +54,33 @@
     "Phone": "+1 919 547 3700",
     "Website": "https://www.stephengould.com/morrisville-nc/",
     "Notes": "Packaging design and supply. Located in Morrisville."
+  },
+  {
+    "Name": "MM Greensboro (MM Packaging US Inc.)",
+    "Location": "1072 Boulder Road, Greensboro, NC 27409",
+    "Phone": "+1 336 292 4555",
+    "Website": "https://mm.group/locations/mm-greensboro/",
+    "Notes": "Focuses on pharmaceutical/healthcare labels and folding cartons. May not have used Gaylords but is a large packaging facility ~85 miles away."
+  },
+  {
+    "Name": "PIP Danville",
+    "Location": "329 Riverview Drive, Danville, VA 24541",
+    "Phone": "434-792-0020",
+    "Website": "https://www.pip.com/danvilleva156/products-services/labels-packaging/corrugated-shipping-packaging",
+    "Notes": "Offers corrugated shipping packaging. Located ~65 miles north. Good for new custom boxes, potentially used."
+  },
+  {
+    "Name": "U-Haul Moving & Storage of Dan River",
+    "Location": "Danville, VA 24540",
+    "Phone": "1-800-468-4285",
+    "Website": "https://www.uhaul.com/Locations/Supplies-near-Danville-VA-24540/",
+    "Notes": "General moving supplies. Likely only small quantities of new boxes, but a fallback option."
+  },
+  {
+    "Name": "PostalAnnex",
+    "Location": "2120 E Fire Tower Rd #107, Greenville, NC 27858",
+    "Phone": "(252) 689-6920",
+    "Website": "https://www.postalannex.com/packaging-supplies/greenville/18005",
+    "Notes": "Packaging supplies in Greenville (~60 miles). Likely smaller scale."
   }
 ]
