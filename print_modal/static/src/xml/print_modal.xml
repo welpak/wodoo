@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="print_modal.PrintDialog" owl="1">
+        <Dialog title="props.title" close="props.close">
+            <div class="o_print_modal_dialog">
+                <div class="form-group">
+                    <label for="printer_select" class="col-form-label">Printer</label>
+                    <select id="printer_select" class="form-control" t-model="state.selectedPrinterId">
+                        <option value="client">Download PDF</option>
+                        <t t-foreach="state.printers" t-as="printer" t-key="printer.id">
+                            <option t-att-value="printer.id">
+                                <t t-esc="printer.name"/>
+                            </option>
+                        </t>
+                    </select>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="copies_input" class="col-form-label">Copies</label>
+                    <input type="number" id="copies_input" class="form-control" t-model="state.copies" min="1"/>
+                </div>
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="_onConfirm">Print</button>
+                <button class="btn btn-secondary" t-on-click="_onCancel">Cancel</button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>
