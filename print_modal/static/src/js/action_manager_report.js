@@ -3,6 +3,7 @@
 import { registry } from "@web/core/registry";
 import { _t } from "@web/core/l10n/translation";
 import { PrintDialog } from "./print_modal";
+import { evaluateExpr } from "@web/core/py_js/py";
 
 async function printModalReportHandler(action, options, env) {
     // If the printer selection has already been made, let the action proceed normally.
@@ -25,15 +26,33 @@ async function printModalReportHandler(action, options, env) {
                 // Clone options and add our flags
                 const newOptions = { ...options, printer_selection_made: true };
 
-                // Clone action and inject context
-                const newContext = { ...action.context,
-                    force_printer_id: printerId,
-                    copies: copies,
-                    // If printerId is 'client', we force client, else we force printer logic
+                // Ensure context is an object
+                let baseContext = action.context || {};
+                if (typeof baseContext === 'string') {
+                    try {
+                        baseContext = evaluateExpr(baseContext);
+                    } catch (e) {
+                        console.warn("Print Modal: Could not evaluate context string", baseContext);
+                        baseContext = {};
+                    }
+                }
+
+                // Prepare new context values
+                // Ensure printerId is passed correctly (int or 'client')
+                // If printerId is 'client', we don't force a printer ID.
+                const forcePrinterId = printerId === 'client' ? false : parseInt(printerId);
+                const numCopies = parseInt(copies) || 1;
+
+                const newContext = {
+                    ...baseContext,
+                    force_printer_id: forcePrinterId,
+                    copies: numCopies,
                     force_print_to_client: printerId === 'client',
                 };
 
                 const newAction = { ...action, context: newContext };
+
+                console.log("Print Modal: Executing action with context:", newContext);
 
                 // Re-trigger the action
                 await env.services.action.doAction(newAction, newOptions);
