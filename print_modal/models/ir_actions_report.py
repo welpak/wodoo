@@ -29,7 +29,10 @@ class IrActionsReport(models.Model):
         # Check for copies in context
         if context.get('copies'):
             try:
-                result['copies'] = int(context.get('copies'))
+                copies = int(context.get('copies'))
+                result['copies'] = copies
+                # Also add num-copies for wider compatibility
+                result['num-copies'] = copies
             except (ValueError, TypeError):
                 pass
 
