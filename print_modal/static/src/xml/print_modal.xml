@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="print_modal.PrintDialog" owl="1">
-        <Dialog title="props.title" close="props.close">
+        <Dialog title="props.title">
             <div class="o_print_modal_dialog">
                 <div class="form-group">
                     <label for="printer_select" class="col-form-label">Printer</label>
