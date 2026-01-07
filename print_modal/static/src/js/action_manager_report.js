@@ -6,9 +6,68 @@ import { PrintDialog } from "./print_modal";
 import { evaluateExpr } from "@web/core/py_js/py";
 
 async function printModalReportHandler(action, options, env) {
-    // If the printer selection has already been made, let the action proceed normally.
+    // If the printer selection has already been made, execute the print logic directly
+    // to ensure our context (with force_printer_id) is preserved.
+    // The default OCA handler strips context, which breaks our forcing logic.
     if (options && options.printer_selection_made) {
-        return false;
+        const context = action.context || {};
+
+        // If we are forcing to client (Download), we can let the standard flow handle it.
+        // Returning false allows the next handler (likely standard Odoo) to pick it up.
+        // OCA handler will also run but will ignore 'client' action.
+        if (context.force_print_to_client) {
+             return false;
+        }
+
+        // If we have a forced printer, we must handle the server communication ourselves.
+        try {
+            const orm = env.services.orm;
+
+            // 1. Check behaviour (this will trigger our backend override)
+            const print_action = await orm.call(
+                "ir.actions.report",
+                "print_action_for_report_name",
+                [action.report_name],
+                { context: context }
+            );
+
+            // 2. If action is server, perform the print
+            if (print_action && print_action.action === "server") {
+                 // Using active_ids from context is standard for reports
+                 const recordIds = context.active_ids || [];
+
+                 const result = await orm.call(
+                    "ir.actions.report",
+                    "print_document_client_action",
+                    [action.id, recordIds, action.data],
+                    { context: context }
+                );
+
+                if (result) {
+                    env.services.notification.add(_t("Successfully sent to printer!"), {
+                        type: "success",
+                    });
+                } else {
+                    // If result is empty/false, it means printing failed (raised exception or returned None)
+                    env.services.notification.add(_t("Could not send to printer!"), {
+                        type: "danger",
+                    });
+
+                    // We could optionally show the "Issue on..." dialog here if we wanted to match OCA perfectly,
+                    // but a simple notification is often clearer.
+                    // To be safe and avoid "Issue on false", we stick to the notification.
+                }
+                return true; // Stop propagation, we handled it.
+            }
+        } catch (e) {
+            console.error("Print Modal: Error during custom print execution", e);
+            env.services.notification.add(_t("Error communicating with printer server."), {
+                type: "danger",
+            });
+            return true;
+        }
+
+        return false; // Fallback if action is not server or something else
     }
 
     // If it's not a report action, ignore.
@@ -38,8 +97,6 @@ async function printModalReportHandler(action, options, env) {
                 }
 
                 // Prepare new context values
-                // Ensure printerId is passed correctly (int or 'client')
-                // If printerId is 'client', we don't force a printer ID.
                 const forcePrinterId = printerId === 'client' ? false : parseInt(printerId);
                 const numCopies = parseInt(copies) || 1;
 
@@ -56,16 +113,15 @@ async function printModalReportHandler(action, options, env) {
 
                 // Re-trigger the action
                 await env.services.action.doAction(newAction, newOptions);
-                // Return true to stop the current action propagation (avoid double print)
+                // Return true to stop the current action propagation
                 resolve(true);
             },
             close: () => {
-                // User cancelled, return true to stop propagation (prevent default print)
                 resolve(true);
             }
         });
     });
 }
 
-// Register before standard handlers
+// Register before standard handlers and OCA handlers
 registry.category("ir.actions.report handlers").add("print_modal_handler", printModalReportHandler, { sequence: 1 });
