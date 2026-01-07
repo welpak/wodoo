@@ -54,6 +54,7 @@ class IrActionsReport(models.Model):
     def print_document(self, record_ids, data=None):
         """Override to handle multiple copies by looping if necessary."""
         context = self.env.context
+        _logger.info(f"PRINT_MODAL: print_document called with record_ids: {record_ids} (Type: {type(record_ids)})")
 
         try:
             copies = int(context.get('copies', 1))
@@ -62,18 +63,19 @@ class IrActionsReport(models.Model):
 
         if copies > 1:
             _logger.info(f"PRINT_MODAL: Intercepted {copies} copies. Looping manually.")
-            # Loop and call self with copies=1 to trigger individual print jobs.
-            # This ensures we get N separate jobs sent to the printer, bypassing driver issues with 'copies' property.
             success = True
             for i in range(copies):
                 _logger.info(f"PRINT_MODAL: Loop iteration {i+1}/{copies}")
                 try:
                     # Recursive call with modified context.
-                    # This will hit this method again, fail the copies > 1 check, and proceed to super().
                     self.with_context(copies=1).print_document(record_ids, data=data)
                 except Exception as e:
-                    _logger.error(f"PRINT_MODAL: Error in loop iteration {i+1}: {e}")
+                    _logger.error(f"PRINT_MODAL: Error in loop iteration {i+1}: {e}", exc_info=True)
                     success = False
             return success
 
-        return super().print_document(record_ids, data=data)
+        try:
+            return super().print_document(record_ids, data=data)
+        except Exception as e:
+            _logger.error(f"PRINT_MODAL: Error in super().print_document: {e}", exc_info=True)
+            raise

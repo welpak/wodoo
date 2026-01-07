@@ -23,6 +23,25 @@ async function printModalReportHandler(action, options, env) {
         try {
             const orm = env.services.orm;
 
+            // Robustly extract record IDs
+            let recordIds = context.active_ids;
+            if (!recordIds || recordIds.length === 0) {
+                if (context.active_id) {
+                    recordIds = [context.active_id];
+                } else if (action.res_ids) {
+                    recordIds = action.res_ids;
+                } else if (action.res_id) {
+                    recordIds = [action.res_id];
+                } else {
+                    recordIds = [];
+                }
+            }
+
+            // Ensure they are integers
+            recordIds = recordIds.map(id => parseInt(id)).filter(id => !isNaN(id));
+
+            console.log("Print Modal: Printing records:", recordIds);
+
             // 1. Check behaviour (this will trigger our backend override)
             const print_action = await orm.call(
                 "ir.actions.report",
@@ -33,13 +52,13 @@ async function printModalReportHandler(action, options, env) {
 
             // 2. If action is server, perform the print
             if (print_action && print_action.action === "server") {
-                 // Using active_ids from context is standard for reports
-                 const recordIds = context.active_ids || [];
-
+                 // The 'print_document_client_action' is an instance method.
+                 // We must pass the record ID of the action as the first argument (wrapped in a list for 'ids').
+                 // Then the arguments for the method follow: record_ids, data.
                  const result = await orm.call(
                     "ir.actions.report",
                     "print_document_client_action",
-                    [action.id, recordIds, action.data],
+                    [[action.id], recordIds, action.data],
                     { context: context }
                 );
 
@@ -52,10 +71,6 @@ async function printModalReportHandler(action, options, env) {
                     env.services.notification.add(_t("Could not send to printer!"), {
                         type: "danger",
                     });
-
-                    // We could optionally show the "Issue on..." dialog here if we wanted to match OCA perfectly,
-                    // but a simple notification is often clearer.
-                    // To be safe and avoid "Issue on false", we stick to the notification.
                 }
                 return true; // Stop propagation, we handled it.
             }
@@ -106,6 +121,10 @@ async function printModalReportHandler(action, options, env) {
                     copies: numCopies,
                     force_print_to_client: printerId === 'client',
                 };
+
+                // Ensure active_ids are preserved in the new context if they exist in baseContext
+                // (They should be, but let's be explicit if we need to fix anything.
+                // baseContext includes them usually.)
 
                 const newAction = { ...action, context: newContext };
 
