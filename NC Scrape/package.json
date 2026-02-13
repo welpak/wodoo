@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/welpak/wodoo#readme",
   "dependencies": {
-    "csv-writer": "^1.6.0",
-    "playwright": "^1.58.2"
+    "playwright": "^1.58.2",
+    "xlsx": "^0.18.5"
   }
 }
